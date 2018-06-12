@@ -25,6 +25,8 @@ app.use(cors())
 app.use('/api/v1', router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// docu einbauen
+
 router.route('/')
     .get(async(req,res,next) =>{
         iban = req.query.iban
