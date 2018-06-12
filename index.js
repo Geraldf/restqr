@@ -30,13 +30,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //fix gemacht
 
 router.route('/')
-    .get(async(req,res,next) =>{
-        iban = req.query.iban
-        betrag=req.query.betrag
-        verwendung = req.query.verwendung
-        empfaenger = req.query.empfaenger
-        payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung)
-        var data =  await genDataUrl(payload,{type:"image/png"})
+    .get(async(req,res,next) => {
+        iban = req.query.iban;
+        betrag=req.query.betrag;
+        verwendung = req.query.verwendung;
+        empfaenger = req.query.empfaenger;
+        payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung);
+        var data =  await genDataUrl(payload,{type:"image/png"});
         var im = data.split(",")[1];
         var img = new Buffer(im, 'base64');
         res.writeHead(200, {
