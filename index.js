@@ -27,6 +27,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // docu einbauen
 
+//fix gemacht
+
 router.route('/')
     .get(async(req,res,next) =>{
         iban = req.query.iban
