@@ -1,4 +1,5 @@
 const { promisify } = require('util')
+
 const cors = require('cors')
 const PORT = process.env.PORT || 3000
 
@@ -20,18 +21,30 @@ app.use(cors())
  * and returns the base64 data-url.
  * @returns {{ src: String }}
  */
-app.get('/', async (req, res) => {
-    payload = req.query.payload
+app.get('/girocode', async (req, res) => {
+    iban = req.query.iban
+    betrag=req.query.betrag
+    verwendung = req.query.verwendung
+    empfaenger = req.query.empfaenger
+    payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung)
+    var data =  await genDataUrl(payload,{type:"image/png"})
+    var im = data.split(",")[1];
+    var img = new Buffer(im, 'base64');
+    res.writeHead(200, {
+        'Content-Type': 'image/png',
+        'Content-Length': img.length
+    });
+    res.end(img);
 
-    if (payload === '') {
-        return res
-            .status(422)
-            .json({ err: 'Missing required parameter: "payload"' })
-    }
+    // if (payload === '') {
+    //     return res
+    //         .status(422)
+    //         .json({ err: 'Missing required parameter: "payload"' })
+    // }
 
-    const dataUrl = await genDataUrl(payload)
+    // const dataUrl = await genDataUrl(payload)
 
-    return res.json({ src: dataUrl })
+    // return res.json({ src: dataUrl })
 })
 
 app.listen(
