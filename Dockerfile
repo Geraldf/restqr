@@ -1,13 +1,14 @@
 FROM node:8.9-alpine
-ENV NODE_ENV production
-ENV http_proxy http://10.70.20.17:8080
-ENV https_proxy https://10.70.20.17:8080
-run npm config set https-proxy https://10.70.20.17:8080
-WORKDIR /usr/src/app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-RUN npm config set proxy http://10.70.20.17:8080 &&\
-    npm config set https-proxy https://10.70.20.17:8080 &&\
-    npm install --production  && mv node_modules ../
+
+ENV http_proxy http://10.0.128.11:3128
+ENV https_proxy https://10.0.128.11:3128
+WORKDIR /usr/app
+RUN echo --------
+RUN echo http_proxy
+RUN env
+COPY package.json .
+RUN npm config set https-proxy http://10.0.128.11:3128 \
+    && npm install 
 COPY . .
 EXPOSE 3000
 CMD npm start

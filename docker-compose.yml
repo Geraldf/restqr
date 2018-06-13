@@ -1,13 +1,13 @@
-version: '2.1'
-
+version: '2'
 services:
-  myqrcode:
-    image: myqrcode
+  web:
     build: .
-    environment:
-      NODE_ENV: production
+    command: npm start
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
     ports:
-      - 3000:3000
+      - "3000:3000"
     environment: 
       - http_proxy=${http_proxy}
       - https_proxy=${https_proxy}
