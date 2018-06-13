@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3000
 const QRCode = require('qrcode')
 const genDataUrl = promisify(QRCode.toDataURL.bind(QRCode))
 
+var ip = require('ip');
 
 var swaggerUi = require('swagger-ui-express'),
     swaggerDocument = require('./swagger.json');
@@ -35,10 +36,11 @@ router.route('/')
         betrag=req.query.betrag;
         verwendung = req.query.verwendung;
         empfaenger = req.query.empfaenger;
+        errtxt = util.format('bitte geben Sie folgende Parameter an: iban, betrag, verwendung, empfaenger\neine gültiger code wird mit: "http://%s:3000/api/v1?iban=DE91694500650001313600&betrag=22.45&empfaenger=Schwenninger&verwendung=Rechnung123"',ip.address());
         if(!iban || !betrag || !verwendung || !empfaenger) {
             return res
              .status(422)
-             .json({ err: 'bitte geben Sie folgende Parameter an: iban, betrag, verwendung, empfaenger\neine gültiger code wird mit: "http://localhost:3000/api/v1?iban=DE91694500650001313600&betrag=22.45&empfaenger=Schwenninger&verwendung=Rechnung123"' })
+             .json({ err: errtxt })
         }
         else {
             payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung);
