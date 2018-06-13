@@ -38,9 +38,7 @@ router.route('/')
         empfaenger = req.query.empfaenger;
         errtxt = util.format('bitte geben Sie folgende Parameter an: iban, betrag, verwendung, empfaenger\neine gültiger code wird mit: "http://%s:3000/api/v1?iban=DE91694500650001313600&betrag=22.45&empfaenger=Schwenninger&verwendung=Rechnung123"',ip.address());
         if(!iban || !betrag || !verwendung || !empfaenger) {
-            return res
-             .status(422)
-             .json({ err: errtxt })
+            res.status(422).sendFile(path.join(__dirname, './', 'err.html'));
         }
         else {
             payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung);
@@ -56,7 +54,6 @@ router.route('/')
     }
 );
 
-})
 
 app.listen(
     PORT,
