@@ -25,6 +25,8 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use('/api/v1', router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(express.static('public'));
+app.set('view engine', 'pug');
 
 // docu einbauen
 
@@ -38,7 +40,8 @@ router.route('/')
         empfaenger = req.query.empfaenger;
         errtxt = util.format('bitte geben Sie folgende Parameter an: iban, betrag, verwendung, empfaenger\neine gültiger code wird mit: "http://%s:3000/api/v1?iban=DE91694500650001313600&betrag=22.45&empfaenger=Schwenninger&verwendung=Rechnung123"',ip.address());
         if(!iban || !betrag || !verwendung || !empfaenger) {
-            res.status(422).sendFile(path.join(__dirname, './', 'err.html'));
+
+            res.status(422).render('index', { title: 'Hey', message: 'Hello there!' });
         }
         else {
             payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung);
