@@ -35,15 +35,22 @@ router.route('/')
         betrag=req.query.betrag;
         verwendung = req.query.verwendung;
         empfaenger = req.query.empfaenger;
-        payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung);
-        var data =  await genDataUrl(payload,{type:"image/png"});
-        var im = data.split(",")[1];
-        var img = new Buffer(im, 'base64');
-        res.writeHead(200, {
-            'Content-Type': 'image/png',
-            'Content-Length': img.length
-        });
-        res.end(img);
+        if(!iban || !betrag || !verwendung || !empfaenger) {
+            return res
+             .status(422)
+             .json({ err: 'bitte geben Sie folgende Parameter an: iban, betrag, verwendung, empfaenger\neine gültiger code wird mit: "http://localhost:3000/api/v1?iban=DE91694500650001313600&betrag=22.45&empfaenger=Schwenninger&verwendung=Rechnung123"' })
+        }
+        else {
+            payload = util.format('BCD\n001\n2\nSCT\n\n%s\n%s\nEUR%s\n\n\n%s\n\n',empfaenger,iban,betrag,verwendung);
+            var data =  await genDataUrl(payload,{type:"image/png"});
+            var im = data.split(",")[1];
+            var img = new Buffer(im, 'base64');
+            res.writeHead(200, {
+                'Content-Type': 'image/png',
+                'Content-Length': img.length
+            });
+            res.end(img);
+        }   
     }
 );
 
