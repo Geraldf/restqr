@@ -2,8 +2,27 @@ extends ../node_modules/pug-bootstrap/_bootstrap
 append styles
 	// Custom styles for this template
 	//link(href='/res/css/starter-template.css', rel='stylesheet')
+
+
+
 block body
+	script(src="/res/scripts/iban.js")
 	.container
 		img(src="/res/images/logo.png" alt="Image Title")
 		h1 Schwenninger GiroCode Generator
+		form(method='GET' action='/api/v1')
+			div.form-group
+				label(for='empfaenger') Empfänger:
+				input#empfaenger.form-control(type='text', placeholder='Zahlungsempfänger' required name='empfaenger' value=empfaenger )
+			div.form-group
+				label(for='iban') IBAN:
+				input#iban.form-control(type='text', placeholder='IBAN'  required name='iban' value = iban)
+			div.form-group
+				label(for='betrag') Betrag:
+				input#betrag.form-control(type='text', placeholder='22,50' required name='betrag' value = betrag)
+			div.form-group
+				label(for='verwendung') Verwendungszeck:
+				input#verwendung.form-control(type='text', placeholder='Verwendungszeck' required name='verwendung' value= verwendung)
+			button.btn.btn-primary(type='submit') Generieren
+
 		
