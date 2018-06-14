@@ -1,5 +1,9 @@
-html
-  head
-    title= title
-  body
-    h1= message
+extends ../node_modules/pug-bootstrap/_bootstrap
+append styles
+	// Custom styles for this template
+	//link(href='/res/css/starter-template.css', rel='stylesheet')
+block body
+	.container
+		img(src="/res/images/logo.png" alt="Image Title")
+		h1 Schwenninger GiroCode Generator
+		

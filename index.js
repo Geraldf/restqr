@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000
 // QRCode generation requirements
 const QRCode = require('qrcode')
 const genDataUrl = promisify(QRCode.toDataURL.bind(QRCode))
+var path=require('path');
 
 var ip = require('ip');
 
@@ -19,14 +20,19 @@ const bodyParser = require('body-parser')
 const express = require('express')
 var router = express.Router()
 
+
 // Configure Express app
 const app = express()
+app.set('view engine', 'pug');
 app.use(bodyParser.json())
 app.use(cors())
 app.use('/api/v1', router);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.static('public'));
-app.set('view engine', 'pug');
+app.use('/res', express.static('resources'))
+
+//app.locals.basedir = path.join(__dirname, './');
+
 
 // docu einbauen
 
